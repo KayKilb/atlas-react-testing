@@ -1,4 +1,3 @@
-// MusicPlayer.tsx
 import React, { useEffect, useState, useCallback } from 'react';
 import CurrentlyPlaying from './CurrentlyPlaying';
 import Playlist from './Playlist';
@@ -17,7 +16,7 @@ const MusicPlayer: React.FC = () => {
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(1);
-  const [isShuffle, setIsShuffle] = useState<boolean>(false);
+  const [isShuffle] = useState<boolean>(false);  // Removed setIsShuffle since it's not used
 
   useEffect(() => {
     if (!loading && playlist.length > 0) {
@@ -28,14 +27,14 @@ const MusicPlayer: React.FC = () => {
   // Skip to the next song, with wrapping
   const handleSkip = useCallback(() => {
     if (!currentSong || playlist.length <= 1) return;
-    let nextIndex = (playlist.findIndex(song => song.id === currentSong.id) + 1) % playlist.length;
+    const nextIndex = (playlist.findIndex(song => song.id === currentSong.id) + 1) % playlist.length;
     setCurrentSong(playlist[nextIndex]);
   }, [playlist, currentSong]);
 
   // Shuffle to a random song, different from the current one
   const handleShuffle = useCallback(() => {
     if (!currentSong || playlist.length <= 1) return;
-    let randomIndex;
+    let randomIndex; // Initialize the randomIndex properly
     do {
       randomIndex = Math.floor(Math.random() * playlist.length);
     } while (playlist[randomIndex].id === currentSong.id);
@@ -45,7 +44,7 @@ const MusicPlayer: React.FC = () => {
   // Go to the previous song, with wrapping
   const handlePrevious = useCallback(() => {
     if (!currentSong || playlist.length <= 1) return;
-    let previousIndex = (playlist.findIndex(song => song.id === currentSong.id) - 1 + playlist.length) % playlist.length;
+    const previousIndex = (playlist.findIndex(song => song.id === currentSong.id) - 1 + playlist.length) % playlist.length;
     setCurrentSong(playlist[previousIndex]);
   }, [playlist, currentSong]);
 
@@ -59,13 +58,13 @@ const MusicPlayer: React.FC = () => {
 
   const handleSongChange = (song: Song) => {
     setCurrentSong(song);
-    setIsPlaying(true);  // Optionally start playing the selected song immediately
+    setIsPlaying(true);  // Start playing the selected song immediately
   };
 
   return (
     <div className="music-player flex flex-col lg:flex-row gap-4 h-full max-w-7xl mx-auto p-4 bg-fuchsia-900">
       {/* Currently Playing Section */}
-      <div className="flex-1 bg-white rounded-lg shadow-md overflow-hidden relative min-h-[630px] lg:min-h-0">
+      <div className="flex-1 bg-pink-200 rounded-lg shadow-md overflow-hidden relative min-h-[630px] lg:min-h-0">
         {currentSong && (
           <CurrentlyPlaying
             song={currentSong}
