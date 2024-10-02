@@ -1,19 +1,17 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import CoverArt from '../components/CoverArt';
 
-// Define some example image URLs for testing
-const defaultImage = 'https://example.com/default-cover.jpg';
-const customImage = 'https://example.com/custom-cover.jpg';
-
 describe('CoverArt Component', () => {
-    it('should match snapshot with default coverImage', () => {
-        const { asFragment } = render(<CoverArt coverImage={defaultImage} />);
-        expect(asFragment()).toMatchSnapshot();
-    });
+  it('renders with a cover image', () => {
+    render(<CoverArt coverImage="test-image.jpg" />);
+    const img = screen.getByAltText('Cover Art');
+    expect(img).toBeInTheDocument();
+    expect(img).toHaveAttribute('src', 'test-image.jpg');
+  });
 
-    it('should match snapshot with a different coverImage', () => {
-        const { asFragment } = render(<CoverArt coverImage={customImage} />);
-        expect(asFragment()).toMatchSnapshot();
-    });
+  it('matches snapshot', () => {
+    const { asFragment } = render(<CoverArt coverImage="test-image.jpg" />);
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
